@@ -21,9 +21,9 @@ jugadores pueden realizar apuestas y obtener ganancias.
 
 __Opcion 1:__
 - Clonar el repositorio.
-- Importar el proyecto como Maven.
-- Con el plugin para Eclipse: Spring Tools 4 ya instalado.
-- Ejecutar en el Boot Dashboard
+- Importar el proyecto como __Maven__.
+- Con el plugin para __Eclipse__: __Spring Tools 4__ ya instalado.
+- Ejecutar en el __*Boot Dashboard*__
 
 __Opcion2:__
 - Descargar el archivo ejecutable '__spring-boot-casino-j11.jar__'
@@ -42,7 +42,7 @@ __Opcion2:__
 - Automatización con __JobRunr__: 
 - Cada minuto, el programa ingresa un *Player* nuevo con un tiempo disponible el cual efectúa una serie de apuestas.
 - Cada vez que ingresa un nuevo *Player* se purga cualquier *Player* que estuviera con tiempo caducado (para evitar que crezca el consumo de memoria).
-- Se puede observar el devenir de los trabajos de JobRunr en http://localhost:8000/, el cual se instala por defecto.
+- Se puede observar el devenir de los trabajos de __JobRunr__ en http://localhost:8000/, el cual se instala por defecto.
 - Cada transacción se muestra en el log.
 
 

@@ -40,10 +40,10 @@ Opcion2:
 ## Funcionamiento Automático
 
 - Automatización con JobRunr: 
-Cada minuto, el programa ingresa un Player nuevo con un tiempo disponible el cual efectúa una serie de apuestas.
-Cada vez que ingresa un nuevo Player se purga cualquier Player que estuviera con tiempo caducado (para evitar que crezca el consumo de memoria).
-Se puede observar el devenir de los trabajos de JobRunr en http://localhost:8000/, el cual se instala por defecto.
-Cada transacción se muestra en el log.
+- Cada minuto, el programa ingresa un Player nuevo con un tiempo disponible el cual efectúa una serie de apuestas.
+- Cada vez que ingresa un nuevo Player se purga cualquier Player que estuviera con tiempo caducado (para evitar que crezca el consumo de memoria).
+- Se puede observar el devenir de los trabajos de JobRunr en http://localhost:8000/, el cual se instala por defecto.
+- Cada transacción se muestra en el log.
 
 
 ## Funcionamiento Manual

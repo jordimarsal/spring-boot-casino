@@ -59,19 +59,17 @@ public class SampleJobService {
 		playerService.save(player);
 		playerService.purgeLogins();
 		
-		Bet firstBet = buildBet(player, balancePlayer);
-		CasinoLogger.info("JOB: New Bet     ", firstBet.constructor());
-		Bet retBet = gamePlayService.bet(firstBet);
-		
-		balancePlayer = retBet.getBalancePlayer();
-		Bet secondBet = buildBet(player, balancePlayer);
-		CasinoLogger.info("JOB: New Bet     ", secondBet.constructor());
-		retBet = gamePlayService.bet(secondBet);
-		
-		balancePlayer = retBet.getBalancePlayer();
-		Bet thirdBet = buildBet(player, balancePlayer);
-		CasinoLogger.info("JOB: New Bet     ", thirdBet.constructor());
-		retBet = gamePlayService.bet(thirdBet);
+		Bet retBet = null;
+		for(int i=0;i<=15;i++){
+			if (retBet != null){
+				balancePlayer = retBet.getBalancePlayer();
+			}
+			Bet nextBet = buildBet(player, balancePlayer);
+			if(nextBet.getBalancePlayer()-nextBet.getBetAmount()>=0) {
+				CasinoLogger.info("JOB: New Bet     ", nextBet.constructor());
+				retBet = gamePlayService.bet(nextBet);
+			}
+		}
 
 		CasinoLogger.info("END JOB");
     }

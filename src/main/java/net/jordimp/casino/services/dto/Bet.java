@@ -16,6 +16,8 @@ public class Bet implements Serializable {
 
 	public static final String E_NULL = "NULL values in Bet";
 
+	public static final String E_NO_FUNDS = "Balance is exhausted";
+
 	private String betUUID;
 
 	private Double betAmount;

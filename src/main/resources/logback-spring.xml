@@ -32,7 +32,7 @@
         </rollingPolicy>
     </appender>
     
-    <!-- LOG everything at DEBUG level -->
+    <!-- LOG everything at WARN level -->
     <root level="warn">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
@@ -44,7 +44,7 @@
         <appender-ref ref="Console" />
     </root>
  
-    <!-- LOG "net.jordimp*" at TRACE level -->
+    <!-- LOG "net.jordimp*" at DEBUG level -->
     <logger name="net.jordimp" level="debug" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />

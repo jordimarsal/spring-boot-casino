@@ -13,8 +13,12 @@ public class Jugada {
 	private static final String BET_DONE = "Bet done";
 
 	public static Bet bet(Bet bet, Optional<Player> playerOpt) {
-		if (bet == null || bet.getPlayerUUID() == null || bet.getGameUUID() == null) {
+		if (hasNullValues(bet)) {
 			bet = badBet(bet, Bet.E_NULL);
+			return bet;
+		}
+		if(isBalanceExhausted(bet)) {
+			bet = badBet(bet, Bet.E_NO_FUNDS);
 			return bet;
 		}
 		if (isInTimeBet(bet, playerOpt)) {
@@ -24,6 +28,14 @@ public class Jugada {
 		}
 
 		return bet;
+	}
+
+	private static boolean isBalanceExhausted(Bet bet) {
+		return bet.getBalancePlayer() - bet.getBetAmount() <= 0;
+	}
+
+	private static boolean hasNullValues(Bet bet) {
+		return bet.getPlayerUUID() == null || bet.getGameUUID() == null;
 	};
 
 	private static boolean isInTimeBet(Bet bet, Optional<Player> playerOpt) {

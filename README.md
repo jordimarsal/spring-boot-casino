@@ -51,6 +51,7 @@ Cada transacción se muestra en el log.
 - Una vez ejecutado un servicio REST estarà disponible en __http://localhost:9095/api/casino/__
 - Se adjunta una colección de *Requests* recopiladas en [Postman Importar](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/)
 - los endpoints disponibles son:
+
 | Endpoint | Return |
 | :--- | :--- |
 | login | String |

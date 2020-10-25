@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "fa50bfb5-2e07-46bd-a1b7-16ba815e5db3",
+		"name": "casino",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login player",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"maxTime\": 320,\r\n    \"userProvider\": \"POKERSTAR\",\r\n    \"uuid\": \"TEST-UUID-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9095/api/casino/logon",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"logon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BET",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"betAmount\": 10,\r\n    \"playerUUID\": \"TEST-UUID-01\",\r\n    \"gameUUID\": \"BLACKJACK-UUID\",\r\n    \"balancePlayer\": 100.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9095/api/casino/bet/BET-UUID-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"bet",
+						"BET-UUID-01"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"disabled": true
+						},
+						{
+							"key": "data",
+							"value": "{\"maxTime\":320,\"userProvider\":\"POKERSTAR\",\"uuid\":\"TEST-UUID-01\"}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BET poker",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"betAmount\": 10,\r\n    \"playerUUID\": \"TEST-UUID-01\",\r\n    \"gameUUID\": \"POKER-UUID\",\r\n    \"balancePlayer\": 100.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9095/api/casino/bet/BET-UUID-02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"bet",
+						"BET-UUID-02"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"disabled": true
+						},
+						{
+							"key": "data",
+							"value": "{\"maxTime\":320,\"userProvider\":\"POKERSTAR\",\"uuid\":\"TEST-UUID-01\"}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BET roul",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"betAmount\": 10,\r\n    \"playerUUID\": \"TEST-UUID-01\",\r\n    \"gameUUID\": \"ROULETTE-UUID\",\r\n    \"balancePlayer\": 100.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9095/api/casino/bet/BET-UUID-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"bet",
+						"BET-UUID-03"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"disabled": true
+						},
+						{
+							"key": "data",
+							"value": "{\"maxTime\":320,\"userProvider\":\"POKERSTAR\",\"uuid\":\"TEST-UUID-01\"}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BET slot",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"betAmount\": 1,\r\n    \"playerUUID\": \"TEST-UUID-01\",\r\n    \"gameUUID\": \"SLOT-UUID\",\r\n    \"balancePlayer\": 100.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9095/api/casino/bet/BET-UUID-04",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"bet",
+						"BET-UUID-04"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"disabled": true
+						},
+						{
+							"key": "data",
+							"value": "{\"maxTime\":320,\"userProvider\":\"POKERSTAR\",\"uuid\":\"TEST-UUID-01\"}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9095/api/casino/logout/TEST-UUID-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9095",
+					"path": [
+						"api",
+						"casino",
+						"logout",
+						"TEST-UUID-01"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

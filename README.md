@@ -6,6 +6,7 @@
 
 Implementación conceptual de backend aplicación de un casino simplificado donde los
 jugadores pueden realizar apuestas y obtener ganancias.
+Aplicación desarrollada con __Java OpenJDK 11__.
 
 
 ## Contenido

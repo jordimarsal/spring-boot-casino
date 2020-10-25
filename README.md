@@ -30,6 +30,7 @@ __Opcion2:__
 - Descargar el archivo ejecutable '__spring-boot-casino-j11.jar__'
 - Abrir una consola.
 - Introducir en la línea de comandos: __java -jar spring-boot-casino-j11.jar__
+- NOTA IMPORTANTE: En algunas ejecuciones desde __java -jar__ el jobrunner se queda aparentemente detenido, he comprobado que en ese caso apretar la combinación de teclas __Crtl + c__, pulsada una sola vez, permite que el flujo de trabajos siga funcionando. (Más de una vez detendrá la ejecución del jar).
 
 
 ## Comentarios

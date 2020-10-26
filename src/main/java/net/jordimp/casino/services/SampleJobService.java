@@ -96,7 +96,7 @@ public class SampleJobService {
     }
     
     private String getGameUUID() {
-    	int randomNum = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+    	int randomNum = ThreadLocalRandom.current().nextInt(0, 4 + 1);
     	String [] literals = {"VIDEOBINGO-UUID","BLACKJACK-UUID","POKER-UUID","ROULETTE-UUID","SLOT-UUID"};
     	return literals[randomNum];
     }

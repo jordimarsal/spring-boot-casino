@@ -112,7 +112,7 @@ public class Bet implements Serializable {
 		this.warning = warning;
 	}
 
-	public Boolean isBad() {
+	public boolean isBad() {
 		return bad;
 	}
 

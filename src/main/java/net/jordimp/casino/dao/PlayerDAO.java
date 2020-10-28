@@ -8,7 +8,7 @@ public interface PlayerDAO {
 
 	public boolean delete(Player player);
 
-	public Player findByUUID(String UUID);
+	public Player findByUUID(String uuid);
 
 	public Player login(Player player);
 

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties(prefix = "roul")
-public class Roulette extends BaseGame{
+public class Roulette extends BaseGame {
 
 	private static final String PREFIX = "roul";
 	

@@ -13,13 +13,13 @@ public class PlayerServiceImpl implements PlayerService {
 	@Autowired
 	private PlayerDAO playerDAO;
 
-	public PlayerServiceImpl() {
-	};
+	private PlayerServiceImpl() {
+	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Player findByUUID(String UUID) {
-		return playerDAO.findByUUID(UUID);
+	public Player findByUUID(String uuid) {
+		return playerDAO.findByUUID(uuid);
 	}
 
 	@Override

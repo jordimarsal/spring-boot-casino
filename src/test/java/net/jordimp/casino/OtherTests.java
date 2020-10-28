@@ -18,11 +18,7 @@ import net.jordimp.casino.utils.Utils;
 class OtherTests {
 
 	@Test
-	void contextLoads() {
-	}
-
-	@Test
-	public void playerinTime() throws Exception {
+	void playerinTime() throws Exception {
 
 		Player player = new Player(new Date(), 20L, "TEST-UUID-01", UserProvider.POKERSTAR);
 
@@ -37,7 +33,7 @@ class OtherTests {
 	}
 
 	@Test
-	public void stringFormat() throws Exception {
+	void stringFormat() throws Exception {
 
 		String win = Bet.WIN;
 		Double prize = 10.0;

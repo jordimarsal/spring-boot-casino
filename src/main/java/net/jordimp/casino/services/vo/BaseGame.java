@@ -5,23 +5,24 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
+import net.jordimp.casino.utils.EnvWrapperUtils;
+
 public abstract class BaseGame implements Game {
 
 	@Autowired
 	private Environment env;
-
-	protected static Environment environment;
 
 	protected String bprefix;
 
 	@PostConstruct
 	public void init() {
 		if (env != null) {
-			environment = env;
+			EnvWrapperUtils.setEnv(env);
 		}
-		if (environment != null && bprefix != null) {
+		if (bprefix != null) {
+			Environment environment = EnvWrapperUtils.getEnv();
 			this.name = environment.getProperty(bprefix + ".name");
-			this.UUID = environment.getProperty(bprefix + ".uuid");
+			this.uuid = environment.getProperty(bprefix + ".uuid");
 			this.type = environment.getProperty(bprefix + ".type");
 			this.prize = Double.parseDouble(environment.getProperty(bprefix + ".prize"));
 			this.probability = Double.parseDouble(environment.getProperty(bprefix + ".prob"));
@@ -32,7 +33,7 @@ public abstract class BaseGame implements Game {
 
 	String name;
 
-	String UUID;
+	String uuid;
 
 	String type;
 
@@ -56,7 +57,7 @@ public abstract class BaseGame implements Game {
 
 	@Override
 	public String getUUID() {
-		return UUID;
+		return uuid;
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public abstract class BaseGame implements Game {
 
 	@Override
 	public String toString() {
-		return name + " [name=" + name + ", UUID=" + UUID + ", type=" + type + ", prize=" + prize + ", probability="
+		return name + " [name=" + name + ", UUID=" + uuid + ", type=" + type + ", prize=" + prize + ", probability="
 				+ probability + ", minBet=" + minBet + ", maxBet=" + maxBet + "]";
 	}
 
@@ -95,7 +96,7 @@ public abstract class BaseGame implements Game {
 	}
 
 	public void setUUID(String uUID) {
-		UUID = uUID;
+		uuid = uUID;
 	}
 
 	public void setType(String type) {

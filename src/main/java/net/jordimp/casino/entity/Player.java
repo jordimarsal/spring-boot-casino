@@ -25,7 +25,7 @@ public class Player implements Serializable {
 
 	private Long maxTime;
 
-	private String UUID;
+	private String uuid;
 
 	@Enumerated(EnumType.STRING)
 	private UserProvider userProvider;
@@ -37,7 +37,7 @@ public class Player implements Serializable {
 		super();
 		this.loginDate = loginDate;
 		this.maxTime = maxTime;
-		UUID = uUID;
+		uuid = uUID;
 		this.userProvider = userProvider;
 	}
 
@@ -58,11 +58,11 @@ public class Player implements Serializable {
 	}
 
 	public String getUUID() {
-		return UUID;
+		return uuid;
 	}
 
 	public void setUUID(String uUID) {
-		UUID = uUID;
+		uuid = uUID;
 	}
 
 	public UserProvider getUserProvider() {
@@ -75,7 +75,7 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Player [maxTime=" + maxTime + ", UUID=" + UUID + ", userProvider=" + userProvider + "]";
+		return "Player [maxTime=" + maxTime + ", UUID=" + uuid + ", userProvider=" + userProvider + "]";
 	}
 
 }

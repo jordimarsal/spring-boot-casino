@@ -8,19 +8,21 @@ import net.jordimp.casino.services.vo.Game;
 
 public class GameHandler {
 
-	static Map<String, Game> games = new HashMap<String, Game>();
+	static Map<String, Game> games = new HashMap<>();
 
-	public static Game getGame(String UUID) {
-		return getFromMap(UUID);
+	private GameHandler() {}
+	
+	public static Game getGame(String uuid) {
+		return getFromMap(uuid);
 	}
 
-	private static Game getFromMap(String UUID) {
-		if (!games.containsKey(UUID)) {
-			Game gotGame = new GameFactory().create(UUID);
-			games.put(UUID, gotGame);
+	private static Game getFromMap(String uuid) {
+		if (!games.containsKey(uuid)) {
+			Game gotGame = new GameFactory().create(uuid);
+			games.put(uuid, gotGame);
 			return gotGame;
 		}
-		return games.get(UUID);
+		return games.get(uuid);
 	}
 
 }

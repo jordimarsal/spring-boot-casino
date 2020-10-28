@@ -12,27 +12,27 @@ public class GameFactory implements AbstractFactory<Game> {
 	@Override
 	public Game create(String gameType) {
 		Game result;
-	    switch (gameType) {
-	        case "VIDEOBINGO-UUID":
-	            result = new VideoBingo(); 
-	            break;
-	        case "BLACKJACK-UUID":
-	            result = new Blackjack();
-	            break;
-	        case "POKER-UUID":
-	            result = new Poker();
-	            break;
-	        case "ROULETTE-UUID":
-	            result = new Roulette();
-	            break;
-	        case "SLOT-UUID":
-	            result = new Slot();
-	            break;
-	        default:
-	            result = null;
-	            break;
-	    }
-	    return result;
+		switch (gameType) {
+		case "VIDEOBINGO-UUID":
+			result = new VideoBingo();
+			break;
+		case "BLACKJACK-UUID":
+			result = new Blackjack();
+			break;
+		case "POKER-UUID":
+			result = new Poker();
+			break;
+		case "ROULETTE-UUID":
+			result = new Roulette();
+			break;
+		case "SLOT-UUID":
+			result = new Slot();
+			break;
+		default:
+			result = null;
+			break;
+		}
+		return result;
 	}
 
 }

@@ -35,7 +35,7 @@ class PlayerTests {
 	@MockBean
 	private PlayerServiceImpl playerService;
 	
-	Player mockPlayer = new Player(new Date(), 300L, "MOCK-PLAYER-UUID", UserProvider.BWIN );
+	Player mockPlayer = new Player(new Date(), 300L, "MOCK-PLAYER-UUID", UserProvider.BWIN);
 	
 	@Test
 	void contextLoads() {
@@ -46,7 +46,7 @@ class PlayerTests {
 	
 	@Test
 	@Order(1)
-	public void loginPlayerWithoutMock() throws Exception {
+	void loginPlayerWithoutMock() throws Exception {
 
 		//Mockito.when(playerService.login(Mockito.any(Player.class))).thenReturn(mockPlayer);
 
@@ -69,7 +69,7 @@ class PlayerTests {
 	
 	@Test
 	@Order(2)
-	public void logoutPlayerWithoutMock() throws Exception {
+	void logoutPlayerWithoutMock() throws Exception {
 
 		//Mockito.when(playerService.logout(Mockito.anyString())).thenReturn(true);
 

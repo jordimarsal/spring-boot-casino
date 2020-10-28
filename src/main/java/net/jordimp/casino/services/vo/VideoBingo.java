@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties(prefix = "vb")
-public class VideoBingo extends BaseGame{
+public class VideoBingo extends BaseGame {
 
 	private static final String PREFIX = "vb";
 	

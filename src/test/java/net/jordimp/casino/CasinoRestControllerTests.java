@@ -31,7 +31,7 @@ class CasinoRestControllerTests {
 	@MockBean
 	private PlayerServiceImpl playerService;
 	
-	Player mockPlayer = new Player(new Date(), 300L, "MOCK-PLAYER-UUID", UserProvider.POKERSTAR );
+	Player mockPlayer = new Player(new Date(), 300L, "MOCK-PLAYER-UUID", UserProvider.POKERSTAR);
 	
 	Player postPlayer = new Player(new Date(), 320L, "TEST-UUID-01", UserProvider.POKERSTAR);
 	
@@ -43,7 +43,7 @@ class CasinoRestControllerTests {
 	}
 	
 	@Test
-	public void getPlayer() throws Exception {
+	void getPlayer() throws Exception {
 
 		Mockito.when(playerService.findByUUID(Mockito.anyString())).thenReturn(mockPlayer);
 
@@ -62,7 +62,7 @@ class CasinoRestControllerTests {
 	}
 	
 	@Test
-	public void loginPlayer() throws Exception {
+	void loginPlayer() throws Exception {
 
 		Mockito.when(playerService.login(Mockito.any(Player.class))).thenReturn(postPlayer);
 
@@ -84,7 +84,7 @@ class CasinoRestControllerTests {
 	}
 	
 	@Test
-	public void logoutPlayer() throws Exception {
+	void logoutPlayer() throws Exception {
 
 		Mockito.when(playerService.logout(Mockito.anyString())).thenReturn(true);
 

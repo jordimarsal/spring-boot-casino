@@ -33,11 +33,11 @@ class BetTests {
 	
 	Player testPlayer = new Player(new Date(), 320L, "TEST-UUID-02", UserProvider.POKERSTAR);
 	
-	Bet betLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID",100.0);
-	Bet betBadLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID",100.0);
+	Bet betLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID", 100.0);
+	Bet betBadLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID", 100.0);
 	
-	Bet betBJLo = new Bet(1.0, "TEST-UUID-01", "BLACKJACK-UUID",100.0);
-	Bet betBJHi = new Bet(300.0, "TEST-UUID-01", "BLACKJACK-UUID",100.0);
+	Bet betBJLo = new Bet(1.0, "TEST-UUID-01", "BLACKJACK-UUID", 100.0);
+	Bet betBJHi = new Bet(300.0, "TEST-UUID-01", "BLACKJACK-UUID", 100.0);
 	
 	private static String expLogin = "Bet done";
 	private static String expBadLogin = "Player not logged or timed out";
@@ -54,7 +54,7 @@ class BetTests {
 	
 	
 	@Test
-	public void BetWhithouAndWithloginPlayer() throws Exception {
+	void BetWhithouAndWithloginPlayer() throws Exception {
 
 		// BET WITHOUT LOGIN PLAYER
 		
@@ -98,7 +98,7 @@ class BetTests {
 	}
 	
 	@Test
-	public void BetExcessHighAndLow() throws Exception {
+	void BetExcessHighAndLow() throws Exception {
 
 		// BET EXCESS HIGH
 		

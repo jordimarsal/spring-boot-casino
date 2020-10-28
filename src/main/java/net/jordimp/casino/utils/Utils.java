@@ -10,18 +10,19 @@ import net.jordimp.casino.entity.Player;
 
 public class Utils {
 
+	private Utils(){}
+	
 	// https://stackoverflow.com/a/2848268
 	// used to avoid warnings in EntityManager calls.
 	public static <T> List<T> castList(Class<? extends T> clazz, Collection<?> c) {
-		List<T> r = new ArrayList<T>(c.size());
+		List<T> r = new ArrayList<>(c.size());
 		for (Object o : c)
 			r.add(clazz.cast(o));
 		return r;
 	}
 
 	public static String wrap(String pre, String suf) {
-		String wrapToken = "{\"" + pre + "\":\"" + suf + "\"}";
-		return wrapToken;
+		return "{\"" + pre + "\":\"" + suf + "\"}";
 	}
 
 	public static String extendWrap(String wrap, String pre, String suf) {
@@ -35,10 +36,7 @@ public class Utils {
 	public static boolean isInLoginTime(Player fly) {
 		Date login = fly.getLoginDate();
 		long now = System.currentTimeMillis();
-		if (now <= (fly.getMaxTime() * 1000 + login.getTime())) {
-			return true;
-		}
-		return false;
+		return now <= (fly.getMaxTime() * 1000 + login.getTime());
 	}
 
 }

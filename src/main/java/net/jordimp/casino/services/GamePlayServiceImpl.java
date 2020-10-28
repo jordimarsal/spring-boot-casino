@@ -15,14 +15,14 @@ public class GamePlayServiceImpl implements GamePlayService {
 	@Autowired
 	private PlayerService playerService;
 
-    public GamePlayServiceImpl() {}
+	private GamePlayServiceImpl() {
+	}
 
 	@Override
-	public Bet bet(Bet bet){
-		
+	public Bet bet(Bet bet) {
+
 		Optional<Player> playerOpt = Optional.ofNullable(playerService.findByUUID(bet.getPlayerUUID()));
 		return Jugada.bet(bet, playerOpt);
-	};
-
+	}
 
 }

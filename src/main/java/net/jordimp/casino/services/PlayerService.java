@@ -8,7 +8,7 @@ public interface PlayerService {
 
 	void save(Player player);
 
-	Player findByUUID(String UUID);
+	Player findByUUID(String uuid);
 
 	Player login(Player player);
 

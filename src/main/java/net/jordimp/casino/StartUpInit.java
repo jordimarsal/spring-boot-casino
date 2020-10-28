@@ -13,7 +13,7 @@ import net.jordimp.casino.entity.Player;
 import net.jordimp.casino.entity.UserProvider;
 import net.jordimp.casino.services.PlayerServiceImpl;
 import net.jordimp.casino.services.SampleJobService;
-import net.jordimp.casino.utils.CasinoLogger;
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 
 @Component
 public class StartUpInit {
@@ -34,7 +34,7 @@ public class StartUpInit {
 	public void init() {
 		Player postPlayer = new Player(new Date(), 320L, "TEST-UUID-01", UserProvider.POKERSTAR);
 		playerService.save(postPlayer);
-		CasinoLogger.debug("init: inserting TEST-UUID-01 player");
+		CasinoLoggerUtils.debug("init: inserting TEST-UUID-01 player");
 	}
 	
 	@PostConstruct

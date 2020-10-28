@@ -5,29 +5,30 @@ import java.util.Optional;
 import net.jordimp.casino.entity.Player;
 import net.jordimp.casino.services.dto.Bet;
 import net.jordimp.casino.services.vo.Game;
-import net.jordimp.casino.utils.CasinoLogger;
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 import net.jordimp.casino.utils.Utils;
 
 public class Jugada {
 	private static final String TRANSACTION = "TRANSACTION";
 	private static final String BET_DONE = "Bet done";
+	
+	private Jugada() {}
 
 	public static Bet bet(Bet bet, Optional<Player> playerOpt) {
+		Bet retBet = null;
 		if (hasNullValues(bet)) {
-			bet = badBet(bet, Bet.E_NULL);
-			return bet;
+			return badBet(bet, Bet.E_NULL);
 		}
 		if(isBalanceExhausted(bet)) {
-			bet = badBet(bet, Bet.E_NO_FUNDS);
-			return bet;
+			return badBet(bet, Bet.E_NO_FUNDS);
 		}
-		if (isInTimeBet(bet, playerOpt)) {
-			bet = processBet(bet);
+		if (isInTimeBet(playerOpt)) {
+			retBet = processBet(bet);
 		} else {
-			bet = badBet(bet, Bet.W_NO_TIME);
+			retBet = badBet(bet, Bet.W_NO_TIME);
 		}
 
-		return bet;
+		return retBet;
 	}
 
 	private static boolean isBalanceExhausted(Bet bet) {
@@ -36,9 +37,9 @@ public class Jugada {
 
 	private static boolean hasNullValues(Bet bet) {
 		return bet.getPlayerUUID() == null || bet.getGameUUID() == null;
-	};
+	}
 
-	private static boolean isInTimeBet(Bet bet, Optional<Player> playerOpt) {
+	private static boolean isInTimeBet(Optional<Player> playerOpt) {
 		boolean isValid = false;
 		if (playerOpt.isPresent()) {
 			isValid = Utils.isInLoginTime(playerOpt.get());
@@ -54,20 +55,20 @@ public class Jugada {
 	}
 
 	private static Bet processBet(Bet bet) {
+		Bet retBet = null;
 		Optional<Game> gameOpt = Optional.ofNullable(GameHandler.getGame(bet.getGameUUID()));
 		if (gameOpt.isPresent()) {
-			bet = twitch(bet, gameOpt.get());
+			retBet = twitch(bet, gameOpt.get());
 		} else {
-			bet = badBet(bet, Bet.W_NO_GAME);
+			retBet = badBet(bet, Bet.W_NO_GAME);
 		}
 
-		return bet;
+		return retBet;
 	}
 
 	private static Bet twitch(Bet bet, Game game) {
 		if (bet.getBetAmount() > game.getMaxBet() || bet.getBetAmount() < game.getMinBet()) {
-			bet = badBet(bet, Bet.W_LIMIT_BET);
-			return bet;
+			return badBet(bet, Bet.W_LIMIT_BET);
 		}
 		bet.setPrizeAmount(0.0);
 		bet.setComment(BET_DONE);
@@ -78,7 +79,7 @@ public class Jugada {
 		}
 		bet.setBalancePlayer(bet.getBalancePlayer() - bet.getBetAmount());
 		bet.setBalancePlayer(bet.getBalancePlayer() + bet.getPrizeAmount());
-		CasinoLogger.info(TRANSACTION, bet.toString());
+		CasinoLoggerUtils.info(TRANSACTION, bet.toString());
 		return bet;
 	}
 }

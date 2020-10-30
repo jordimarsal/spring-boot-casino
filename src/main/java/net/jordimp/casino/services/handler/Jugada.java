@@ -15,7 +15,6 @@ public class Jugada {
 	private Jugada() {}
 
 	public static Bet bet(Bet bet, Optional<Player> playerOpt) {
-		Bet retBet = null;
 		if (hasNullValues(bet)) {
 			return badBet(bet, Bet.E_NULL);
 		}
@@ -23,12 +22,9 @@ public class Jugada {
 			return badBet(bet, Bet.E_NO_FUNDS);
 		}
 		if (isInTimeBet(playerOpt)) {
-			retBet = processBet(bet);
-		} else {
-			retBet = badBet(bet, Bet.W_NO_TIME);
+			return processBet(bet);
 		}
-
-		return retBet;
+		return badBet(bet, Bet.W_NO_TIME);
 	}
 
 	private static boolean isBalanceExhausted(Bet bet) {

@@ -50,6 +50,6 @@ public class StartUpInit {
 	
 	@PostConstruct
     public void scheduleRecurrently() {
-        jobScheduler.<SampleJobService>scheduleRecurrently(x -> x.executeSampleJob("New Player and his Bets"), Cron.minutely());
+        jobScheduler.<SampleJobService>scheduleRecurrently(x -> x.executeSampleJob("New Player and his Bets"), Cron.every15minutes());
     }
 }

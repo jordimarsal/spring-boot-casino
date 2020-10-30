@@ -108,7 +108,20 @@ public final class CasinoLoggerUtils {
 	 */
 	public static void error(final String tag, Exception e) {
 		error(tag, e.getMessage());
-		
+	}
+
+	public static void pres(String tag, String msg) {
+		String present = "## %s %s ##";
+		if (LOGGER.isInfoEnabled()){
+			LOGGER.info(String.format(present, tag, msg));
+		}
+	}
+	
+	public static void tres(String msg) {
+		String res = "     %s";
+		if (LOGGER.isInfoEnabled()){
+			LOGGER.info(String.format(res, msg));
+		}
 	}
 
 }

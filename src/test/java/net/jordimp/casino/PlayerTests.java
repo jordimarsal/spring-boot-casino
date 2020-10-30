@@ -22,12 +22,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import net.jordimp.casino.entity.Player;
 import net.jordimp.casino.entity.UserProvider;
 import net.jordimp.casino.services.PlayerServiceImpl;
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation.class)
 class PlayerTests {
+	
+	private static final String RESULT = "RESULT";
+	private static final String EXPCTD = "EXPCTD";
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -58,12 +62,13 @@ class PlayerTests {
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		System.out.println("##  RESULT LOGIN PLAYER ##");
-		System.out.println(result.getResponse().getContentAsString());
-		System.out.println("##  EXPECTED LOGIN PLAYER ##");
+		CasinoLoggerUtils.pres(RESULT, "LOGIN PLAYER WITHOUT MOCK");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
+		
 		String expected = "{\"logon\":\"Player [maxTime=300, UUID=MOCK-PLAYER-UUID, userProvider=BWIN]\",\"result\":\"false\"}";
-		System.out.println(expected);
-
+		CasinoLoggerUtils.pres(EXPCTD, "LOGIN PLAYER WITHOUT MOCK");
+		CasinoLoggerUtils.tres(expected);
+		
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
 	
@@ -80,11 +85,12 @@ class PlayerTests {
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		System.out.println("##  RESULT LOGOUT PLAYER ##");
-		System.out.println(result.getResponse().getContentAsString());
-		System.out.println("##  EXPECTED LOGOUT PLAYER ##");
+		CasinoLoggerUtils.pres(RESULT, "LOGOUT PLAYER WITHOUT MOCK");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
+
 		String expected = "{\"logout\":\"false\",\"result\":\"OK\"}";
-		System.out.println(expected);
+		CasinoLoggerUtils.pres(EXPCTD, "LOGOUT PLAYER WITHOUT MOCK");
+		CasinoLoggerUtils.tres(expected);
 
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}

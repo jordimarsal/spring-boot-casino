@@ -20,6 +20,7 @@ import net.jordimp.casino.entity.Player;
 import net.jordimp.casino.entity.UserProvider;
 import net.jordimp.casino.services.GamePlayServiceImpl;
 import net.jordimp.casino.services.dto.Bet;
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,6 +31,9 @@ class BetTests {
 	
 	@Autowired
 	private GamePlayServiceImpl gamePlayService;
+	
+	private static final String RESULT = "RESULT";
+	private static final String EXPCTD = "EXPCTD";
 	
 	Player testPlayer = new Player(new Date(), 320L, "TEST-UUID-02", UserProvider.POKERSTAR);
 	
@@ -58,13 +62,13 @@ class BetTests {
 
 		// BET WITHOUT LOGIN PLAYER
 		
-		System.out.println("##  RESULT BET NOT LOGIN ##");
+		CasinoLoggerUtils.pres(RESULT, "BET NOT LOGIN");
 		Bet retBetNOLogin = gamePlayService.bet(betLogin);
 		String resultStr = retBetNOLogin.getWarning();
-		System.out.println(resultStr);
-		System.out.println("##  EXPCTD BET NOT LOGIN ##");
+		CasinoLoggerUtils.tres(resultStr);
+		CasinoLoggerUtils.pres(EXPCTD, "BET NOT LOGIN");
 		String expected = expBadLogin;
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 		assertEquals(expected, resultStr);
 		
 		
@@ -77,23 +81,26 @@ class BetTests {
 				.accept(MediaType.APPLICATION_JSON);		
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		System.out.println("##  RESULT LOGIN ##");
-		System.out.println(result.getResponse().getContentAsString());
+		CasinoLoggerUtils.pres(RESULT, "LOGIN");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
+
 		expected = "{\"logon\":\"Player [maxTime=320, UUID=TEST-UUID-02, userProvider=POKERSTAR]\",\"result\":\"true\"}";
-		System.out.println("##  EXPCTD LOGIN ##");
-		System.out.println(expected);
+		CasinoLoggerUtils.pres(EXPCTD, "LOGIN");
+		CasinoLoggerUtils.tres(expected);
+		
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 
 		
 		// BET WITH LOGIN PLAYER
 		
-		System.out.println("##  RESULT BET LOGIN ##");
+		CasinoLoggerUtils.pres(RESULT, "BET LOGIN");
 		Bet retBetLogin = gamePlayService.bet(betLogin);
 		resultStr = retBetLogin.getComment();
-		System.out.println(resultStr);
-		System.out.println("##  EXPCTD BET LOGIN ##");
+		CasinoLoggerUtils.tres(resultStr);
+		
+		CasinoLoggerUtils.pres(EXPCTD, "BET LOGIN");
 		expected = expLogin;
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 		assertEquals(expected, resultStr);
 	}
 	
@@ -102,27 +109,27 @@ class BetTests {
 
 		// BET EXCESS HIGH
 		
-		System.out.println("##  RESULT EXCESS HIGH ##");
+		CasinoLoggerUtils.pres(RESULT, "EXCESS HIGH");
 		Bet retBetHi = gamePlayService.bet(betBJLo);
-		System.out.println(retBetHi);
+		CasinoLoggerUtils.tres(retBetHi.toString());
 		String resultStr = retBetHi.getWarning();
-		System.out.println(resultStr);
-		System.out.println("##  EXPCTD EXCESS HIGH ##");
+		CasinoLoggerUtils.tres(resultStr);
+		CasinoLoggerUtils.pres(EXPCTD, "EXCESS HIGH");
 		String expected = expHi;
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 		assertEquals(expected, resultStr);
 		
 		
 		// BET EXCESS LOW
 		
-		System.out.println("##  RESULT EXCESS LOW ##");
+		CasinoLoggerUtils.pres(RESULT, "EXCESS LOW");
 		Bet retBetLo = gamePlayService.bet(betBJLo);
-		System.out.println(retBetLo);
+		CasinoLoggerUtils.tres(retBetLo.toString());
 		resultStr = retBetLo.getWarning();
-		System.out.println(resultStr);
-		System.out.println("##  EXPCTD EXCESS LOW ##");
+		CasinoLoggerUtils.tres(resultStr);
+		CasinoLoggerUtils.pres(EXPCTD, "EXCESS LOW");
 		expected = expLow;
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 		assertEquals(expected, resultStr);
 	}
 

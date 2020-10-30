@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import net.jordimp.casino.entity.Player;
 import net.jordimp.casino.entity.UserProvider;
 import net.jordimp.casino.services.PlayerServiceImpl;
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,6 +36,8 @@ class CasinoRestControllerTests {
 	
 	Player postPlayer = new Player(new Date(), 320L, "TEST-UUID-01", UserProvider.POKERSTAR);
 	
+	private static final String RESULT = "RESULT";
+	private static final String EXPCTD = "EXPCTD";
 		
 	@Test
 	void contextLoads() {
@@ -51,12 +54,13 @@ class CasinoRestControllerTests {
 				.accept(MediaType.APPLICATION_JSON);
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		
+		CasinoLoggerUtils.pres(RESULT, "GET");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
 
-		System.out.println("##  RESULT GET ##");
-		System.out.println(result.getResponse().getContentAsString());
-		System.out.println("##  EXPECTED GET ##");
+		CasinoLoggerUtils.pres(EXPCTD, "GET");
 		String expected = "{\"maxTime\":300,\"userProvider\":\"POKERSTAR\",\"uuid\":\"MOCK-PLAYER-UUID\"}";
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
@@ -74,11 +78,12 @@ class CasinoRestControllerTests {
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		System.out.println("##  RESULT LOGIN PLAYER ##");
-		System.out.println(result.getResponse().getContentAsString());
-		System.out.println("##  EXPECTED LOGIN PLAYER ##");
+		CasinoLoggerUtils.pres(RESULT, "LOGIN PLAYER");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
+		
+		CasinoLoggerUtils.pres(EXPCTD, "LOGIN PLAYER");
 		String expected = "{\"logon\":\"Player [maxTime=320, UUID=TEST-UUID-01, userProvider=POKERSTAR]\",\"result\":\"true\"}";
-		System.out.println(expected);
+		CasinoLoggerUtils.tres(expected);
 
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
@@ -95,11 +100,13 @@ class CasinoRestControllerTests {
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		System.out.println("##  RESULT LOGOUT PLAYER ##");
-		System.out.println(result.getResponse().getContentAsString());
-		System.out.println("##  EXPECTED LOGOUT PLAYER ##");
 		String expected = "{\"logout\":\"true\",\"result\":\"OK\"}";
-		System.out.println(expected);
+		
+		CasinoLoggerUtils.pres(RESULT, "LOGOUT PLAYER");
+		CasinoLoggerUtils.tres(result.getResponse().getContentAsString());
+		
+		CasinoLoggerUtils.pres(EXPCTD, "LOGOUT PLAYER");
+		CasinoLoggerUtils.tres(expected);
 
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}

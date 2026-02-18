@@ -44,9 +44,8 @@ public class PlayerServiceRepositoryTests {
 
 	@Test
 	void testFindByUUIDReturnsNullWhenNotFound() {
-		Player found = playerService.findByUUID("non-existent-" + System.currentTimeMillis());
-
-		assertNull(found);
+		assertThrows(net.jordimp.casino.exceptions.PlayerNotFoundException.class,
+			() -> playerService.findByUUID("non-existent-" + System.currentTimeMillis()));
 	}
 
 	@Test

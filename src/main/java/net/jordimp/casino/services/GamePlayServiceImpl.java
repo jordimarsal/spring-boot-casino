@@ -21,7 +21,13 @@ public class GamePlayServiceImpl implements GamePlayService {
 	@Override
 	public Bet bet(Bet bet) {
 
-		Optional<Player> playerOpt = Optional.ofNullable(playerService.findByUUID(bet.getPlayerUUID()));
+		Player player = null;
+		try {
+			player = playerService.findByUUID(bet.getPlayerUUID());
+		} catch (net.jordimp.casino.exceptions.PlayerNotFoundException e) {
+			// Player not found - playerOpt will be Optional.empty()
+		}
+		Optional<Player> playerOpt = Optional.ofNullable(player);
 		return Jugada.bet(bet, playerOpt);
 	}
 

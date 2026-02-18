@@ -14,30 +14,61 @@ A Spring Boot application demonstrating casino game betting logic.
 - Simplified balance calculation (atomic operations)
 - Removed misleading @Transactional annotations
 
-### In Progress 🔄
-- Database migration planning
-- Authentication/authorization design
-- API documentation
+### Database Migration (Feb 2026) ✅
+- **Complete JPA/Hibernate implementation** with PostgreSQL
+- **Progressive DDD patterns**: Rich domain models with behavior
+- **Transaction management**: @Transactional service layer
+- **Global exception handler**: Domain-specific exceptions
+- **Repository pattern**: Spring Data JPA repositories
+- **Comprehensive testing**: Unit, integration, and E2E tests
+- **Audit trail**: All bets persisted with timestamps
 
 ### Pending ⏳
-- Database persistence implementation
 - Authentication/authorization
 - Rate limiting
-- Audit logging
 - Performance testing
+- Code quality tools (Spotless, JaCoCo, Codecov)
 
 ## Quick Start
 
 ### Prerequisites
 - Java 11+
 - Maven 3.6+
+- PostgreSQL 13+ (for production)
+
+### Database Setup
+
+#### Required: PostgreSQL
+
+Install PostgreSQL 13+ and create database:
+
+```bash
+# Install PostgreSQL
+sudo apt-get install postgresql postgresql-contrib
+
+# Create database and user
+sudo -u postgres createuser casino_user -P
+sudo -u postgres createdb -O casino_user casino
+
+# Grant privileges
+psql -U casino_user -d casino -c "GRANT ALL PRIVILEGES ON DATABASE casino TO casino_user;"
+```
+
+Update `src/main/resources/application-postgres.properties` with your password:
+```properties
+spring.datasource.password=your_secure_password
+```
 
 ### Run Application
 ```bash
+# With PostgreSQL (production profile)
 mvn spring-boot:run
+
+# With H2 in-memory (test profile)
+mvn test -Dspring.profiles.active=test
 ```
 
-The application will start on `http://localhost:8080`
+The application will start on `http://localhost:9095`
 
 ### Run Tests
 ```bash

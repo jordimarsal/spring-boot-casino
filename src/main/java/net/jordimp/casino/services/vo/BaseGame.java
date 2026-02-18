@@ -108,13 +108,46 @@ public abstract class BaseGame implements Game {
     return probability;
   }
 
-  @Override
-  public Double getMinBet() {
-    return minBet;
-  }
+/**
+	 * Ensure this game's properties are initialized from the Environment if they
+	 * were not populated earlier (for example when the game instance was created
+	 * before EnvWrapperUtils was populated). This makes games resilient to
+	 * different bean initialization orders in tests and startup.
+	 */
+	private void ensureInitializedFromEnvIfNeeded() {
+		if (bprefix == null) {
+			return;
+		}
+		// If already populated, nothing to do
+		if (name != null && minBet != null && maxBet != null) {
+			return;
+		}
+		org.springframework.core.env.Environment environment = EnvWrapperUtils.getEnv();
+		if (environment == null) {
+			// environment not available yet; leave defaults in place for now
+			return;
+		}
 
-  @Override
-  public Double getMaxBet() {
+		CasinoLoggerUtils.debug("BASEGAME", "Initializing game properties from Environment for prefix=" + bprefix);
+		this.name = environment.getProperty(bprefix + ".name", this.name == null ? "Unknown Game" : this.name);
+		this.uuid = environment.getProperty(bprefix + ".uuid", this.uuid == null ? "unknown-uuid" : this.uuid);
+		this.type = environment.getProperty(bprefix + ".type", this.type == null ? "Unknown" : this.type);
+
+		this.prize = parseSafely(environment.getProperty(bprefix + ".prize", String.valueOf(this.prize == null ? 0 : this.prize)), 0.0);
+		this.probability = parseSafely(environment.getProperty(bprefix + ".prob", String.valueOf(this.probability == null ? 0 : this.probability)), 0.0);
+		this.minBet = parseSafely(environment.getProperty(bprefix + ".minbet", String.valueOf(this.minBet == null ? 0 : this.minBet)), 0.0);
+		this.maxBet = parseSafely(environment.getProperty(bprefix + ".maxbet", String.valueOf(this.maxBet == null ? 0 : this.maxBet)), 0.0);
+	}
+
+	@Override
+	public Double getMinBet() {
+		ensureInitializedFromEnvIfNeeded();
+		return minBet;
+	}
+
+	@Override
+	public Double getMaxBet() {
+		ensureInitializedFromEnvIfNeeded();
     return maxBet;
   }
 

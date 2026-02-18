@@ -87,7 +87,9 @@ class BetTests {
     // BET WITH LOGIN PLAYER
 
     CasinoLoggerUtils.pres(RESULT, "BET LOGIN");
-    Bet retBetLogin = gamePlayService.bet(betLogin);
+    // use a fresh Bet instance after login to avoid reusing the mutated object
+    Bet betAfterLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID", 100.0);
+    Bet retBetLogin = gamePlayService.bet(betAfterLogin);
     resultStr = retBetLogin.getComment();
     CasinoLoggerUtils.tres(resultStr);
 

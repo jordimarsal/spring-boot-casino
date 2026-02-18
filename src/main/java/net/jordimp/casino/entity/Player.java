@@ -116,6 +116,25 @@ public class Player implements Serializable {
 		return uuid;
 	}
 
+	// Domain behavior
+	public boolean canPlaceBet(double amount) {
+		return !isSessionExpired() && hasSufficientBalance(amount);
+	}
+
+	private boolean isSessionExpired() {
+		if (loginDate == null || maxTime == null) {
+			return true;
+		}
+		long elapsed = System.currentTimeMillis() - loginDate.getTime();
+		return elapsed > maxTime;
+	}
+
+	private boolean hasSufficientBalance(double amount) {
+		// Balance tracking will be added later
+		// For now, always return true
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Player [maxTime=" + maxTime + ", UUID=" + uuid + ", userProvider=" + userProvider + "]";

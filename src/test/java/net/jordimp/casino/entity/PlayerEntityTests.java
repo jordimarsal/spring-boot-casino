@@ -44,4 +44,31 @@ public class PlayerEntityTests {
         assertNotNull(found);
         assertEquals("test-uuid-retrieve", found.getUuid());
     }
+
+    @Test
+    void testPlayerCanPlaceBet() {
+        Player player = new Player();
+        player.setLoginDate(new java.util.Date());
+        player.setMaxTime(10000L);
+
+        assertTrue(player.canPlaceBet(10.0));
+    }
+
+    @Test
+    void testExpiredPlayerCannotPlaceBet() {
+        Player player = new Player();
+        player.setLoginDate(new java.util.Date(System.currentTimeMillis() - 20000));
+        player.setMaxTime(10000L);
+
+        assertFalse(player.canPlaceBet(10.0));
+    }
+
+    @Test
+    void testPlayerWithNoLoginCannotPlaceBet() {
+        Player player = new Player();
+        player.setLoginDate(null);
+        player.setMaxTime(10000L);
+
+        assertFalse(player.canPlaceBet(10.0));
+    }
 }

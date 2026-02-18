@@ -50,6 +50,19 @@ public class StartUpInit {
 	
 	@PostConstruct
     public void scheduleRecurrently() {
-        jobScheduler.<SampleJobService>scheduleRecurrently(x -> x.executeSampleJob("New Player and his Bets"), Cron.every15minutes());
+        // Only schedule recurring jobs when JobRunr background server is enabled.
+        // Tests disable JobRunr via `org.jobrunr.background-job-server.enabled=false` so
+        // we skip scheduling to avoid JobRunr runtime errors during test startup.
+        String jobrunrEnabled = env.getProperty("org.jobrunr.background-job-server.enabled", "true");
+        if (!Boolean.parseBoolean(jobrunrEnabled)) {
+            CasinoLoggerUtils.debug("StartUpInit","JobRunr scheduling disabled by property org.jobrunr.background-job-server.enabled=false");
+            return;
+        }
+        // schedule using job name + cron + JobLambda (compatible with the JobRunr version on the classpath)
+        jobScheduler.scheduleRecurrently(
+            "SampleJobService.executeSampleJob",
+            Cron.every15minutes(),
+            () -> sampleJobService.executeSampleJob("New Player and his Bets")
+        );
     }
 }

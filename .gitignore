@@ -37,3 +37,6 @@ docs/
 mvnw
 mvnw.cmd
 .mvn/
+
+### Git Worktrees ###
+.worktrees/

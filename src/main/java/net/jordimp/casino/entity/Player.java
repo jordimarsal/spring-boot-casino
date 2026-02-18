@@ -2,17 +2,29 @@ package net.jordimp.casino.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+@Entity
+@Table(name = "players")
+@EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 @Component("player")
 public class Player implements Serializable {
 
@@ -25,10 +37,21 @@ public class Player implements Serializable {
 
 	private Long maxTime;
 
+	@Id
+	@Column(name = "uuid", nullable = false)
 	private String uuid;
 
 	@Enumerated(EnumType.STRING)
+	@Column(name = "user_provider")
 	private UserProvider userProvider;
+
+	@org.springframework.data.annotation.CreatedDate
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Timestamp createdAt;
+
+	@org.springframework.data.annotation.LastModifiedDate
+	@Column(name = "updated_at")
+	private Timestamp updatedAt;
 
 	public Player() {
 	}
@@ -71,6 +94,26 @@ public class Player implements Serializable {
 
 	public void setUserProvider(UserProvider userProvider) {
 		this.userProvider = userProvider;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUuid() {
+		return uuid;
 	}
 
 	@Override

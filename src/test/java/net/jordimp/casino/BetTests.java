@@ -89,14 +89,20 @@ class BetTests {
     CasinoLoggerUtils.pres(RESULT, "BET LOGIN");
     // use a fresh Bet instance after login to avoid reusing the mutated object
     Bet betAfterLogin = new Bet(10.0, "TEST-UUID-02", "BLACKJACK-UUID", 100.0);
-    Bet retBetLogin = gamePlayService.bet(betAfterLogin);
-    resultStr = retBetLogin.getComment();
-    CasinoLoggerUtils.tres(resultStr);
+
+    RequestBuilder betRequest = MockMvcRequestBuilders.post("/api/casino/bet/" + testPlayer.getUUID())
+        .content(TestUtils.asJsonString(betAfterLogin))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON);
+
+    MvcResult betMvcResult = mockMvc.perform(betRequest).andReturn();
+    String betResponse = betMvcResult.getResponse().getContentAsString();
+    CasinoLoggerUtils.tres(betResponse);
 
     CasinoLoggerUtils.pres(EXPCTD, "BET LOGIN");
     expected = expLogin;
     CasinoLoggerUtils.tres(expected);
-    assertEquals(expected, resultStr);
+    org.junit.jupiter.api.Assertions.assertTrue(betResponse.contains(expected));
   }
 
   @Test

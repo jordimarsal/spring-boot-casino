@@ -1,0 +1,63 @@
+package net.jordimp.casino.services;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Date;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import net.jordimp.casino.entity.Player;
+import net.jordimp.casino.repositories.PlayerRepository;
+
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
+public class PlayerServiceRepositoryTests {
+
+	@Autowired
+	private PlayerService playerService;
+
+	@Autowired
+	private PlayerRepository playerRepository;
+
+	@BeforeEach
+	void setup() {
+		playerRepository.deleteAll();
+	}
+
+	@Test
+	void testFindByUUIDReturnsPlayer() {
+		String uuid = "test-uuid-repo-" + System.currentTimeMillis();
+		Player player = new Player(new Date(), 1000L, uuid, null);
+		playerService.save(player);
+
+		Player found = playerService.findByUUID(uuid);
+
+		assertNotNull(found);
+		assertEquals(uuid, found.getUuid());
+	}
+
+	@Test
+	void testFindByUUIDReturnsNullWhenNotFound() {
+		Player found = playerService.findByUUID("non-existent-" + System.currentTimeMillis());
+
+		assertNull(found);
+	}
+
+	@Test
+	void testSaveAndRetrievePlayer() {
+		String uuid = "test-save-" + System.currentTimeMillis();
+		Player player = new Player(new Date(), 1000L, uuid, null);
+
+		playerService.save(player);
+
+		Player found = playerService.findByUUID(uuid);
+		assertNotNull(found);
+		assertEquals(1000L, found.getMaxTime());
+	}
+}

@@ -66,20 +66,30 @@ public class SampleJobService {
     	Double balancePlayer = (double) ThreadLocalRandom.current().nextInt(BALANCE_MIN, BALANCE_MAX + 1);
 		playerService.save(player);
 		playerService.purgeLogins();
-		
+
 		Bet retBet = null;
-		for (int i=0; i<=15; i++) {
-			if (retBet != null) {
-				balancePlayer = retBet.getBalancePlayer();
-			}
-			Bet nextBet = buildBet(player, balancePlayer);
-			if(nextBet.getBalancePlayer() - nextBet.getBetAmount()>=0) {
-				CasinoLoggerUtils.info("JOB: New Bet     ", nextBet.constructor());
-				retBet = gamePlayService.bet(nextBet);
+		int successfulBets = 0;
+		int failedBets = 0;
+
+		for (int i = 0; i <= 15; i++) {
+			try {
+				if (retBet != null) {
+					balancePlayer = retBet.getBalancePlayer();
+				}
+				Bet nextBet = buildBet(player, balancePlayer);
+				if(nextBet.getBalancePlayer() - nextBet.getBetAmount() >= 0) {
+					CasinoLoggerUtils.info("JOB: New Bet     ", nextBet.constructor());
+					retBet = gamePlayService.bet(nextBet);
+					successfulBets++;
+				}
+			} catch (Exception e) {
+				failedBets++;
+				CasinoLoggerUtils.error("JOB: Bet failed at iteration " + i, e);
+				// Continue processing remaining bets
 			}
 		}
 
-		CasinoLoggerUtils.info("END JOB");
+		CasinoLoggerUtils.info("END JOB - Successful: " + successfulBets + ", Failed: " + failedBets);
     }
     
     private Bet buildBet(Player player, Double balancePlayer) {

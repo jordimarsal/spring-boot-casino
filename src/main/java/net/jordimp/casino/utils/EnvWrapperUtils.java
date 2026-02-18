@@ -5,14 +5,19 @@ import org.springframework.core.env.Environment;
 public class EnvWrapperUtils {
 
 	private EnvWrapperUtils() {}
-	
-	private static Environment environment;
-	
-	public static void setEnv(Environment env) {
+
+	private static volatile Environment environment;
+
+	public static synchronized void setEnv(Environment env) {
 		environment = env;
 	}
-	
+
 	public static Environment getEnv() {
 		return environment;
+	}
+
+	// Added for testing purposes
+	static synchronized void resetEnv() {
+		environment = null;
 	}
 }

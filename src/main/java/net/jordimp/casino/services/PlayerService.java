@@ -4,14 +4,13 @@ import net.jordimp.casino.entity.Player;
 
 public interface PlayerService {
 
-	void delete(Player player);
+  void delete(Player player);
 
-	void save(Player player);
+  void save(Player player);
 
-	Player findByUUID(String uuid);
+  Player findByUUID(String uuid);
 
-	Player login(Player player);
+  Player login(Player player);
 
-	boolean logout(String uuid);
-
+  boolean logout(String uuid);
 }

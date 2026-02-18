@@ -2,18 +2,17 @@ package net.jordimp.casino.services.vo;
 
 public interface Game {
 
-	String getName();
+  String getName();
 
-	String getUUID();
+  String getUUID();
 
-	String getType();
+  String getType();
 
-	Double getPrize();
+  Double getPrize();
 
-	Double getProbability();
+  Double getProbability();
 
-	Double getMinBet();
+  Double getMinBet();
 
-	Double getMaxBet();
-
+  Double getMaxBet();
 }

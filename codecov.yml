@@ -1,0 +1,9 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+
+parsers:
+  jacoco:
+    - xml: target/site/jacoco/jacoco.xml

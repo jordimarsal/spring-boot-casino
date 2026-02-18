@@ -7,7 +7,7 @@
         class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
-                %d{dd-MM-YYYY HH:mm:ss,SSS} %p %C{1} -> %m%n
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %p %C{1} -> %m%n
             </Pattern>
         </layout>
     </appender>
@@ -17,7 +17,7 @@
         <file>${LOGS}/spring-boot-logger.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d{dd-MM-YYYY HH:mm:ss,SSS} %p %C{1} -> %m%n</Pattern>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %p %C{1} -> %m%n</Pattern>
         </encoder>
  
         <rollingPolicy

@@ -2,10 +2,9 @@ package net.jordimp.casino.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,78 +16,77 @@ import org.springframework.test.context.ActiveProfiles;
 @Transactional
 public class BetEntityTests {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
-    @Test
-    void testBetCanBePersisted() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
-        bet.setBetUUID("test-bet-uuid");
+  @Test
+  void testBetCanBePersisted() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+    bet.setBetUUID("test-bet-uuid");
 
-        entityManager.persist(bet);
-        entityManager.flush();
+    entityManager.persist(bet);
+    entityManager.flush();
 
-        assertNotNull(bet.getBetUUID());
-        assertEquals("test-bet-uuid", bet.getBetUUID());
-    }
+    assertNotNull(bet.getBetUUID());
+    assertEquals("test-bet-uuid", bet.getBetUUID());
+  }
 
-    @Test
-    void testBetCanBeRetrieved() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
-        bet.setBetUUID("test-bet-retrieve");
+  @Test
+  void testBetCanBeRetrieved() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+    bet.setBetUUID("test-bet-retrieve");
 
-        entityManager.persist(bet);
-        entityManager.flush();
-        entityManager.clear();
+    entityManager.persist(bet);
+    entityManager.flush();
+    entityManager.clear();
 
-        net.jordimp.casino.services.dto.Bet found = entityManager.find(
-            net.jordimp.casino.services.dto.Bet.class, "test-bet-retrieve");
+    net.jordimp.casino.services.dto.Bet found =
+        entityManager.find(net.jordimp.casino.services.dto.Bet.class, "test-bet-retrieve");
 
-        assertNotNull(found);
-        assertEquals("test-bet-retrieve", found.getBetUUID());
-        assertEquals(10.0, found.getBetAmount());
-    }
+    assertNotNull(found);
+    assertEquals("test-bet-retrieve", found.getBetUUID());
+    assertEquals(10.0, found.getBetAmount());
+  }
 
-    @Test
-    void testBetCalculateWin() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
-        bet.setBad(true);
+  @Test
+  void testBetCalculateWin() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+    bet.setBad(true);
 
-        bet.calculateWin(50.0);
+    bet.calculateWin(50.0);
 
-        assertEquals(50.0, bet.getPrizeAmount());
-        assertFalse(bet.isBad());
-    }
+    assertEquals(50.0, bet.getPrizeAmount());
+    assertFalse(bet.isBad());
+  }
 
-    @Test
-    void testBetCalculateWinWithZeroPrize() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
-        bet.setBad(true);
+  @Test
+  void testBetCalculateWinWithZeroPrize() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+    bet.setBad(true);
 
-        bet.calculateWin(0.0);
+    bet.calculateWin(0.0);
 
-        // Should not update with zero or negative prize
-        assertNull(bet.getPrizeAmount());
-    }
+    // Should not update with zero or negative prize
+    assertNull(bet.getPrizeAmount());
+  }
 
-    @Test
-    void testBetNetBalanceChange() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
-        bet.calculateWin(50.0);
+  @Test
+  void testBetNetBalanceChange() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+    bet.calculateWin(50.0);
 
-        assertEquals(40.0, bet.getNetBalanceChange());
-    }
+    assertEquals(40.0, bet.getNetBalanceChange());
+  }
 
-    @Test
-    void testBetNetBalanceChangeWithNoPrize() {
-        net.jordimp.casino.services.dto.Bet bet =
-            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+  @Test
+  void testBetNetBalanceChangeWithNoPrize() {
+    net.jordimp.casino.services.dto.Bet bet =
+        new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
 
-        assertEquals(-10.0, bet.getNetBalanceChange());
-    }
+    assertEquals(-10.0, bet.getNetBalanceChange());
+  }
 }

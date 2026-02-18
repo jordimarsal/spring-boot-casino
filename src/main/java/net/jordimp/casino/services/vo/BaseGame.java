@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
+import net.jordimp.casino.utils.CasinoLoggerUtils;
 import net.jordimp.casino.utils.EnvWrapperUtils;
 
 public abstract class BaseGame implements Game {
@@ -21,13 +22,48 @@ public abstract class BaseGame implements Game {
 		}
 		if (bprefix != null) {
 			Environment environment = EnvWrapperUtils.getEnv();
-			this.name = environment.getProperty(bprefix + ".name");
-			this.uuid = environment.getProperty(bprefix + ".uuid");
-			this.type = environment.getProperty(bprefix + ".type");
-			this.prize = Double.parseDouble(environment.getProperty(bprefix + ".prize"));
-			this.probability = Double.parseDouble(environment.getProperty(bprefix + ".prob"));
-			this.minBet = Double.parseDouble(environment.getProperty(bprefix + ".minbet"));
-			this.maxBet = Double.parseDouble(environment.getProperty(bprefix + ".maxbet"));
+
+			if (environment == null) {
+				throw new IllegalStateException("Environment not initialized for game: " + bprefix);
+			}
+
+			// Use defaults for missing properties to prevent NPE
+			this.name = environment.getProperty(bprefix + ".name", "Unknown Game");
+			this.uuid = environment.getProperty(bprefix + ".uuid", "unknown-uuid");
+			this.type = environment.getProperty(bprefix + ".type", "Unknown");
+
+			// Safe parsing with defaults
+			String prizeStr = environment.getProperty(bprefix + ".prize", "0");
+			this.prize = parseSafely(prizeStr, 0.0);
+
+			String probStr = environment.getProperty(bprefix + ".prob", "0");
+			this.probability = parseSafely(probStr, 0.0);
+
+			String minBetStr = environment.getProperty(bprefix + ".minbet", "0");
+			this.minBet = parseSafely(minBetStr, 0.0);
+
+			String maxBetStr = environment.getProperty(bprefix + ".maxbet", "0");
+			this.maxBet = parseSafely(maxBetStr, 0.0);
+		}
+	}
+
+	/**
+	 * Safely parse a string to double with fallback value.
+	 *
+	 * @param value the string to parse
+	 * @param defaultValue the default value if parsing fails
+	 * @return the parsed double or default value
+	 */
+	private double parseSafely(String value, double defaultValue) {
+		if (value == null || value.trim().isEmpty()) {
+			return defaultValue;
+		}
+		try {
+			return Double.parseDouble(value.trim());
+		} catch (NumberFormatException e) {
+			CasinoLoggerUtils.warn("BASEGAME",
+				"Failed to parse value '" + value + "', using default: " + defaultValue);
+			return defaultValue;
 		}
 	}
 

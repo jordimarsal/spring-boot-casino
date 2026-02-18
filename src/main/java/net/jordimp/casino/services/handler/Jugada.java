@@ -73,8 +73,11 @@ public class Jugada {
 			bet.setPrizeAmount(game.getPrize());
 			bet.setComment(String.format(Bet.WIN, game.getPrize()));
 		}
-		bet.setBalancePlayer(bet.getBalancePlayer() - bet.getBetAmount());
-		bet.setBalancePlayer(bet.getBalancePlayer() + bet.getPrizeAmount());
+
+		// Single atomic balance update
+		double newBalance = bet.getBalancePlayer() - bet.getBetAmount() + bet.getPrizeAmount();
+		bet.setBalancePlayer(newBalance);
+
 		CasinoLoggerUtils.info(TRANSACTION, bet.toString());
 		return bet;
 	}

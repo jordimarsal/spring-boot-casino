@@ -1,7 +1,5 @@
 package net.jordimp.casino.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -118,9 +116,7 @@ public class RestPlayGameController {
 	}
 
 	private boolean isValidPlayer(Player player) {
-		Optional<Player> playerOpt = Optional.ofNullable(player);
-		String ret = playerOpt.map(ply -> ply.getUUID()).orElse("NO");
-		return !ret.equals("NO");
+		return player != null && player.getUUID() != null;
 	}
 
 }

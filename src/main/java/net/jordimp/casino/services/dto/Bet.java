@@ -159,6 +159,19 @@ public class Bet implements Serializable {
 		this.createdAt = createdAt;
 	}
 
+	// Domain behavior
+	public void calculateWin(double prizeAmount) {
+		if (prizeAmount > 0) {
+			this.prizeAmount = prizeAmount;
+			this.bad = false;
+		}
+	}
+
+	public double getNetBalanceChange() {
+		double prize = prizeAmount != null ? prizeAmount : 0.0;
+		return prize - betAmount;
+	}
+
 	@Override
 	public String toString() {
 		return "Bet [betUUID=" + betUUID + ", gameUUID=" + gameUUID + ", prizeAmount=" + prizeAmount + ", comment="

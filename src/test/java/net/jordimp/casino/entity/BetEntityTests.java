@@ -50,4 +50,45 @@ public class BetEntityTests {
         assertEquals("test-bet-retrieve", found.getBetUUID());
         assertEquals(10.0, found.getBetAmount());
     }
+
+    @Test
+    void testBetCalculateWin() {
+        net.jordimp.casino.services.dto.Bet bet =
+            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+        bet.setBad(true);
+
+        bet.calculateWin(50.0);
+
+        assertEquals(50.0, bet.getPrizeAmount());
+        assertFalse(bet.isBad());
+    }
+
+    @Test
+    void testBetCalculateWinWithZeroPrize() {
+        net.jordimp.casino.services.dto.Bet bet =
+            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+        bet.setBad(true);
+
+        bet.calculateWin(0.0);
+
+        // Should not update with zero or negative prize
+        assertNull(bet.getPrizeAmount());
+    }
+
+    @Test
+    void testBetNetBalanceChange() {
+        net.jordimp.casino.services.dto.Bet bet =
+            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+        bet.calculateWin(50.0);
+
+        assertEquals(40.0, bet.getNetBalanceChange());
+    }
+
+    @Test
+    void testBetNetBalanceChangeWithNoPrize() {
+        net.jordimp.casino.services.dto.Bet bet =
+            new net.jordimp.casino.services.dto.Bet(10.0, "player-123", "game-456", 100.0);
+
+        assertEquals(-10.0, bet.getNetBalanceChange());
+    }
 }

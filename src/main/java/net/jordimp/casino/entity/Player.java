@@ -21,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "players")
@@ -80,20 +81,26 @@ public class Player implements Serializable {
 		this.maxTime = maxTime;
 	}
 
-	public String getUUID() {
-		return uuid;
-	}
-
-	public void setUUID(String uUID) {
-		uuid = uUID;
-	}
-
 	public UserProvider getUserProvider() {
 		return userProvider;
 	}
 
 	public void setUserProvider(UserProvider userProvider) {
 		this.userProvider = userProvider;
+	}
+
+	@JsonProperty("uuid")
+	public String getUUID() {
+		return uuid;
+	}
+
+	// Alias for JPA/Hibernate which expects getUuid()
+	public String getUuid() {
+		return getUUID();
+	}
+
+	public void setUUID(String uUID) {
+		uuid = uUID;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -110,10 +117,6 @@ public class Player implements Serializable {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public String getUuid() {
-		return uuid;
 	}
 
 	// Domain behavior

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.jordimp.casino.entity.Player;
+import net.jordimp.casino.exceptions.PlayerNotFoundException;
 import net.jordimp.casino.repositories.PlayerRepository;
 import net.jordimp.casino.utils.CasinoLoggerUtils;
 
@@ -24,7 +25,8 @@ public class PlayerServiceImpl implements PlayerService {
 	@Override
 	@Transactional(readOnly = true)
 	public Player findByUUID(String uuid) {
-		return playerRepository.findById(uuid).orElse(null);
+		return playerRepository.findById(uuid)
+				.orElseThrow(() -> new PlayerNotFoundException(uuid));
 	}
 
 	@Override
@@ -44,13 +46,11 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public boolean logout(String uuid) {
-		Player player = playerRepository.findById(uuid).orElse(null);
-		if (player != null) {
-			player.setLoginDate(null);
-			playerRepository.save(player);
-			return true;
-		}
-		return false;
+		Player player = playerRepository.findById(uuid)
+				.orElseThrow(() -> new PlayerNotFoundException(uuid));
+		player.setLoginDate(null);
+		playerRepository.save(player);
+		return true;
 	}
 
 	public void purgeLogins() {

@@ -15,34 +15,34 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-	
-	@Bean
-	public ConfigurableServletWebServerFactory webServerFactory() {
-		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-		factory.addConnectorCustomizers(connector -> connector.setProperty("relaxedQueryChars", "|{}[]"));
-		return factory;
-		
-	}
-	
-	@Bean
-	public StorageProvider storageProvider(JobMapper jobMapper) {
-	    InMemoryStorageProvider storageProvider = new InMemoryStorageProvider();
-	    storageProvider.setJobMapper(jobMapper);
-	    return storageProvider;
-	}
-	
-	@Bean
-	public static BeanFactoryPostProcessor beanFactoryPostProcessor0() {
-	       return new BeanFactoryPostProcessor() {
-	           @Override
-	           public void postProcessBeanFactory(
-	                   ConfigurableListableBeanFactory beanFactory) {
-	               BeanDefinition bean = beanFactory.getBeanDefinition(
-	                       DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME);
 
-	               bean.getPropertyValues().add("loadOnStartup", 1);
-	           }
-	       };
-	}
+  @Bean
+  public ConfigurableServletWebServerFactory webServerFactory() {
+    TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+    factory.addConnectorCustomizers(
+        connector -> connector.setProperty("relaxedQueryChars", "|{}[]"));
+    return factory;
+  }
 
+  @Bean
+  public StorageProvider storageProvider(JobMapper jobMapper) {
+    InMemoryStorageProvider storageProvider = new InMemoryStorageProvider();
+    storageProvider.setJobMapper(jobMapper);
+    return storageProvider;
+  }
+
+  @Bean
+  public static BeanFactoryPostProcessor beanFactoryPostProcessor0() {
+    return new BeanFactoryPostProcessor() {
+      @Override
+      public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+        BeanDefinition bean =
+            beanFactory.getBeanDefinition(
+                DispatcherServletAutoConfiguration
+                    .DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME);
+
+        bean.getPropertyValues().add("loadOnStartup", 1);
+      }
+    };
+  }
 }

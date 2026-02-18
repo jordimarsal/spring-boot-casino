@@ -5,10 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "roul")
 public class Roulette extends BaseGame {
 
-	private static final String PREFIX = "roul";
-	
-	public Roulette() {
-		super(PREFIX);
-	}
+  private static final String PREFIX = "roul";
 
+  public Roulette() {
+    super(PREFIX);
+  }
 }

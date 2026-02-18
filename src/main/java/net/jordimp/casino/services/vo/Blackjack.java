@@ -5,10 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "bj")
 public class Blackjack extends BaseGame {
 
-	private static final String PREFIX = "bj";
-	
-	public Blackjack() {
-		super(PREFIX);
-	}
+  private static final String PREFIX = "bj";
 
+  public Blackjack() {
+    super(PREFIX);
+  }
 }

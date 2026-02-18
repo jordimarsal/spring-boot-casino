@@ -5,6 +5,4 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:conf.properties")
-public class ConfigurationPropertiesConfig {
-
-}
+public class ConfigurationPropertiesConfig {}

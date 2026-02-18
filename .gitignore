@@ -36,3 +36,4 @@ logs/
 docs/
 mvnw
 mvnw.cmd
+.mvn/

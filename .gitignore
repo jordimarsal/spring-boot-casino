@@ -34,3 +34,5 @@ build/
 
 logs/
 docs/
+mvnw
+mvnw.cmd

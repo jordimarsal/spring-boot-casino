@@ -56,6 +56,35 @@ public class RestPlayGameController {
 	@PostMapping(value = "/bet/{uuid}")
 	public String bet(@PathVariable(value = "uuid") String uuid, @RequestBody Bet bet) {
 		CasinoLoggerUtils.debug("POST bet = " + bet.constructor());
+
+		// Validate UUID match
+		if (!uuid.equals(bet.getPlayerUUID())) {
+			throw new IllegalArgumentException(
+				"Bet UUID mismatch: path UUID '" + uuid +
+				"' does not match bet player UUID '" + bet.getPlayerUUID() + "'"
+			);
+		}
+
+		// Validate bet amount
+		if (bet.getBetAmount() == null) {
+			throw new IllegalArgumentException("Bet amount cannot be null");
+		}
+
+		if (bet.getBetAmount() <= 0) {
+			throw new IllegalArgumentException(
+				"Bet amount must be positive: " + bet.getBetAmount()
+			);
+		}
+
+		// Define reasonable maximum bet (can be configurable later)
+		final double MAX_BET_AMOUNT = 10000.0;
+		if (bet.getBetAmount() > MAX_BET_AMOUNT) {
+			throw new IllegalArgumentException(
+				"Bet amount exceeds maximum allowed: " + bet.getBetAmount() +
+				" (max: " + MAX_BET_AMOUNT + ")"
+			);
+		}
+
 		bet.setBetUUID(uuid);
 		Bet betResult = gamePlayService.bet(bet);
 

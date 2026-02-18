@@ -100,7 +100,7 @@ public final class CasinoLoggerUtils {
 	}
 
 	private static String concat(final String tag, final String msg) {
-		return tag.concat(" -> ").concat(msg);
+		return tag + " -> " + msg;
 	}
 
 	/*

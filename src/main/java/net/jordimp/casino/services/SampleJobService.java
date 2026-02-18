@@ -33,6 +33,7 @@ public class SampleJobService {
     private static final int PROVIDER_IDX_MAX = 2;
     private static final int GAME_IDX_MIN = 0;
     private static final int GAME_IDX_MAX = 4;
+    private static final int BETS_PER_PLAYER = 15;
 
     private AtomicInteger count = new AtomicInteger();
     private AtomicInteger betCount = new AtomicInteger();
@@ -71,7 +72,7 @@ public class SampleJobService {
 		int successfulBets = 0;
 		int failedBets = 0;
 
-		for (int i = 0; i <= 15; i++) {
+		for (int i = 0; i <= BETS_PER_PLAYER; i++) {
 			try {
 				if (retBet != null) {
 					balancePlayer = retBet.getBalancePlayer();

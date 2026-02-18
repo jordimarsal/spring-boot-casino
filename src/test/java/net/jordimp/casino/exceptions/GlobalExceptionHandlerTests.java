@@ -38,4 +38,53 @@ public class GlobalExceptionHandlerTests {
     assertEquals("PlayerNotFound", response.getError());
     assertTrue(response.getMessage().contains("test-uuid"));
   }
+
+  @Test
+  void testHandleInsufficientBalanceException() {
+    GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    InsufficientBalanceException ex =
+        new InsufficientBalanceException("Insufficient balance: balance=10, bet=50");
+
+    ErrorResponse response = handler.handleDomainError(ex);
+
+    assertNotNull(response);
+    assertEquals("InsufficientBalanceException", response.getError());
+    assertTrue(response.getMessage().contains("Insufficient balance"));
+  }
+
+  @Test
+  void testHandleSessionExpiredException() {
+    GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    SessionExpiredException ex = new SessionExpiredException("Session expired for player: test-uuid");
+
+    ErrorResponse response = handler.handleDomainError(ex);
+
+    assertNotNull(response);
+    assertEquals("SessionExpiredException", response.getError());
+    assertTrue(response.getMessage().contains("Session expired"));
+  }
+
+  @Test
+  void testHandleIllegalArgumentException() {
+    GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    IllegalArgumentException ex = new IllegalArgumentException("Invalid bet amount: -10");
+
+    ErrorResponse response = handler.handleIllegalArgument(ex);
+
+    assertNotNull(response);
+    assertEquals("BadRequest", response.getError());
+    assertTrue(response.getMessage().contains("Invalid bet amount"));
+  }
+
+  @Test
+  void testHandleGenericException() {
+    GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    Exception ex = new Exception("Unexpected database error");
+
+    ErrorResponse response = handler.handleGenericException(ex);
+
+    assertNotNull(response);
+    assertEquals("ServerError", response.getError());
+    assertTrue(response.getMessage().contains("Unexpected database error"));
+  }
 }

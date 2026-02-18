@@ -1,6 +1,6 @@
 package net.jordimp.casino.entity;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 import java.util.stream.Stream;
 
 public class UserProviderConverter implements AttributeConverter<UserProvider, String> {

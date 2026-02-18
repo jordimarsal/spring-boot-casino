@@ -1,7 +1,20 @@
 package net.jordimp.casino.services.dto;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Table(name = "bets")
+@EntityListeners(AuditingEntityListener.class)
 public class Bet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,23 +31,37 @@ public class Bet implements Serializable {
 
 	public static final String E_NO_FUNDS = "Balance is exhausted";
 
+	@Id
+	@Column(name = "uuid", nullable = false)
 	private String betUUID;
 
+	@Column(name = "bet_amount", nullable = false)
 	private Double betAmount;
 
+	@Column(name = "player_uuid", nullable = false)
 	private String playerUUID;
 
+	@Column(name = "game_uuid", nullable = false)
 	private String gameUUID;
 
+	@Column(name = "balance_before")
 	private Double balancePlayer;
 
+	@Column(name = "prize_amount")
 	private Double prizeAmount;
 
+	@Column(name = "comment")
 	private String comment;
 
+	@Column(name = "warning")
 	private String warning;
 
+	@Column(name = "is_win")
 	private Boolean bad = false;
+
+	@CreatedDate
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Timestamp createdAt;
 
 	public Bet(Double amount, String playerUUID, String gameUUID, Double balancePlayer) {
 		super();
@@ -42,6 +69,10 @@ public class Bet implements Serializable {
 		this.playerUUID = playerUUID;
 		this.gameUUID = gameUUID;
 		this.setBalancePlayer(balancePlayer);
+	}
+
+	// Required by JPA
+	protected Bet() {
 	}
 
 	public String getBetUUID() {
@@ -118,6 +149,14 @@ public class Bet implements Serializable {
 
 	public void setBad(Boolean bad) {
 		this.bad = bad;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	@Override

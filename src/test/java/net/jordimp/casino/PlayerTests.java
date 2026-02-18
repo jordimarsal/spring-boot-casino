@@ -52,8 +52,6 @@ class PlayerTests {
 	@Order(1)
 	void loginPlayerWithoutMock() throws Exception {
 
-		//Mockito.when(playerService.login(Mockito.any(Player.class))).thenReturn(mockPlayer);
-
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/api/casino/logon")
 				.content(TestUtils.asJsonString(mockPlayer))
@@ -75,8 +73,6 @@ class PlayerTests {
 	@Test
 	@Order(2)
 	void logoutPlayerWithoutMock() throws Exception {
-
-		//Mockito.when(playerService.logout(Mockito.anyString())).thenReturn(true);
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/api/casino/logout/MOCK-PLAYER-UUID")

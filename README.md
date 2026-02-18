@@ -1,5 +1,7 @@
 # Spring Boot Casino
 
+[![Codecov](https://codecov.io/gh/jordimarsal/spring-boot-casino/branch/main/graph/badge.svg)](https://codecov.io/gh/jordimarsal/spring-boot-casino)
+
 A Spring Boot application demonstrating casino game betting logic with PostgreSQL persistence and Domain-Driven Design patterns.
 
 ## Features

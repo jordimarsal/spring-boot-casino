@@ -304,7 +304,6 @@ mvn spotless:check
 mvn spotless:apply
 ```
 
-Configuration: Palantir Java Format 2.38.0
 
 ### JaCoCo - Code Coverage
 
@@ -373,19 +372,13 @@ mvn spring-boot:run -Dspring.profiles.active=test
 - Performance testing
 - Security audit
 
-## Contributing
-
-1. Format code: `mvn spotless:apply`
-2. Run tests: `mvn test`
-3. Check coverage: `mvn jacoco:report`
-4. Ensure coverage ≥ 85%
 
 ## License
 
-[Your License Here]
+This project is licensed under the MIT License.
 
 ---
 
 **By Jordi Marsal - Sabadell / Octubre 2020**
 
-**Database Migration:** February 2026
+**Database Migration & Java 21 update:** February 2026

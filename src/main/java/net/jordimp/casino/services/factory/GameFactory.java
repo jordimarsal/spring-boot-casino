@@ -23,6 +23,10 @@ public class GameFactory implements AbstractFactory<Game> {
         result = new Poker();
         break;
       case "ROULETTE-UUID":
+      case "ROULETTE-LOSS-UUID":
+      case "ROULETTE-WIN-UUID":
+      case "ROULETTE-MIN-UUID":
+      case "ROULETTE-MAX-UUID":
         result = new Roulette();
         break;
       case "SLOT-UUID":

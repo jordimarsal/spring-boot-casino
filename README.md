@@ -7,21 +7,21 @@ A Spring Boot application demonstrating casino game betting logic with PostgreSQ
 ## Features
 
 ### Core Functionality
-- Player authentication and session management
-- Real-time betting with multiple game types (Video Bingo, Blackjack, Poker, Roulette, Slots)
+- Player session management with timeout control
+- Multi-game betting platform (Video Bingo, Blackjack, Poker, Roulette, Slots)
 - Transactional bet processing with audit trail
-- RESTful API with comprehensive validation
+- RESTful API with comprehensive input validation
+- Background job scheduling with JobRunr
 
 ### Architecture Highlights
-- **PostgreSQL + JPA/Hibernate** - Full database persistence with transactional guarantees
-- **Progressive DDD** - Rich domain models with behavior (Player.canPlaceBet, Bet.calculateWin)
-- **Spring Data JPA** - Repository pattern with custom queries
-- **Global Exception Handler** - Domain-specific exceptions with proper HTTP status codes
-- **Comprehensive Testing** - 49 tests (unit, integration, E2E) all passing
+- **PostgreSQL + JPA/Hibernate** - Database persistence with @Transactional guarantees
+- **Service Layer Pattern** - Business logic separated from controllers
+- **Repository Pattern** - Spring Data JPA for data access
+- **Factory Pattern** - Game instantiation through `GameFactory`
+- **Global Exception Handler** - Domain exceptions with proper HTTP status codes
+- **Comprehensive Testing** - 140 tests with 90%+ branch coverage
 
-## Quick Start
-
-### Prerequisites
+## Technologies
 - Java 21
 - Spring Boot 3.3.2
 - Maven 3.6+
@@ -51,7 +51,7 @@ spring.datasource.password=your_secure_password
 ### Run Application
 
 ```bash
-# With PostgreSQL (production profile)
+# With PostgreSQL (default profile)
 mvn spring-boot:run
 
 # Run tests
@@ -59,40 +59,6 @@ mvn test
 ```
 
 The application will start on `http://localhost:9095`
-
-### Code Quality Tools
-
-#### Spotless (Code Formatting)
-
-Format code automatically:
-```bash
-mvn spotless:apply
-```
-
-Check code format:
-```bash
-mvn spotless:check
-```
-
-#### JaCoCo (Code Coverage)
-
-Generate coverage report:
-```bash
-mvn test
-mvn jacoco:report
-```
-
-View report: `target/site/jacoco/index.html`
-
-Coverage threshold: **85%** enforced by build.
-
-#### Codecov (Coverage Reporting)
-
-Upload coverage to Codecov (requires GitHub Actions):
-```bash
-# After running tests
-bash <(curl -s https://codecov.io/bash)
-```
 
 ## API Endpoints
 
@@ -103,8 +69,6 @@ bash <(curl -s https://codecov.io/bash)
 curl -X POST http://localhost:9095/api/casino/logon \
   -H "Content-Type: application/json" \
   -d '{
-    "loginDate":"2026-02-18T10:00:00",
-    "maxTime":300000,
     "uuid":"test-123",
     "userProvider":"POKERSTAR"
   }'
@@ -124,7 +88,7 @@ curl -X POST http://localhost:9095/api/casino/bet/player-123 \
   -d '{
     "betAmount": 10,
     "playerUUID": "player-123",
-    "gameUUID": "VIDEOBINGO-UUID"
+    "gameUUID": "ROULETTE-UUID"
   }'
 ```
 
@@ -135,7 +99,7 @@ curl -X POST http://localhost:9095/api/casino/bet/player-123 \
 
 ### Player Info
 
-#### Get Player
+#### Get Player (JSON)
 ```bash
 curl http://localhost:9095/api/casino/get/player-123
 ```
@@ -155,7 +119,12 @@ curl http://localhost:9095/api/casino/gets/player-123
 └──────┬──────┘
        │
 ┌──────▼──────┐
-│  Services   │ @Transactional business logic
+│  Services   │ Business logic (@Transactional)
+└──────┬──────┘
+       │
+┌──────▼──────┐
+│  Handlers   │ Game-specific logic (Jugada)
+│  + Factory  │ Game instantiation
 └──────┬──────┘
        │
 ┌──────▼──────┐
@@ -163,7 +132,7 @@ curl http://localhost:9095/api/casino/gets/player-123
 └──────┬──────┘
        │
 ┌──────▼──────┐
-│  Entities   │ Rich domain models
+│  Entities   │ JPA entities (Player, Bet)
 └──────┬──────┘
        │
 ┌──────▼──────┐
@@ -171,40 +140,17 @@ curl http://localhost:9095/api/casino/gets/player-123
 └─────────────┘
 ```
 
-### Components
-
-- **Controllers:** REST endpoints (`RestPlayGameController`, `CasinoRestController`)
-- **Services:** Business logic with @Transactional (`PlayerServiceImpl`, `GamePlayServiceImpl`)
-- **Repositories:** Data access (`PlayerRepository`, `BetRepository`)
-- **Entities:** Rich domain models (`Player`, `Bet`) with domain behavior
-- **Exceptions:** Domain-specific exceptions (`PlayerNotFoundException`, `InsufficientBalanceException`)
-- **Handlers:** Game betting logic (`Jugada`, `GameHandler`)
-
-### Games Supported
-
-- Video Bingo
-- Blackjack
-- Poker
-- Roulette
-- Slot Machine
-
-### Thread-Safety & Transactions
-
-- **@Transactional** - ACID guarantees on service layer
-- **JPA Locking** - Optimistic locking with versioning
-- **Database Constraints** - Foreign keys, not null constraints
-- **Exception Rollback** - Automatic rollback on errors
-
-## Project Structure
+### Package Structure
 
 ```
 src/main/java/net/jordimp/casino/
 ├── CasinoApplication.java         # Spring Boot main class
-├── config/                        # Configuration classes
-│   └── JpaConfig.java             # JPA auditing configuration
+├── config/                        # Configuration
+│   └── JpaConfig.java             # JPA auditing
 ├── controllers/                   # REST endpoints
-├── entity/                        # JPA entities with domain behavior
-│   ├── Player.java                # Rich domain model
+│   └── RestPlayGameController.java
+├── entity/                        # JPA entities
+│   ├── Player.java                # Player entity
 │   └── UserProvider.java          # Enum
 ├── exceptions/                    # Domain exceptions
 │   ├── ErrorResponse.java         # Error response DTO
@@ -212,16 +158,52 @@ src/main/java/net/jordimp/casino/
 │   ├── InsufficientBalanceException.java
 │   ├── PlayerNotFoundException.java
 │   └── SessionExpiredException.java
-├── repositories/                   # Spring Data JPA repositories
+├── repositories/                   # Spring Data JPA
 │   ├── BetRepository.java
 │   └── PlayerRepository.java
 ├── services/                      # Business logic
 │   ├── dto/                       # Data transfer objects
 │   │   └── Bet.java               # JPA entity with domain behavior
-│   ├── handler/                   # Game handlers
-│   └── vo/                        # Value objects (games)
-└── utils/                         # Utilities
+│   ├── factory/                   # Factory pattern
+│   │   ├── AbstractFactory.java
+│   │   └── GameFactory.java       # Game instantiation
+│   ├── handler/                   # Game betting logic
+│   │   ├── GameHandler.java       # Game registry
+│   │   └── Jugada.java           # Bet processing logic
+│   ├── vo/                        # Value objects (games)
+│   │   ├── BaseGame.java          # Abstract game class
+│   │   ├── VideoBingo.java
+│   │   ├── Blackjack.java
+│   │   ├── Poker.java
+│   │   ├── Roulette.java
+│   │   └── Slot.java
+│   ├── GamePlayServiceImpl.java   # Main service
+│   └── PlayerServiceImpl.java    # Player management
+├── utils/                         # Utilities
+│   ├── CasinoLoggerUtils.java    # Logging wrapper
+│   ├── EnvWrapperUtils.java      # Environment access
+│   └── Utils.java                # String formatting
+└── StartUpInit.java              # Startup initialization
 ```
+
+### Key Components
+
+- **Controllers:** `RestPlayGameController` - REST API endpoints
+- **Services:** `GamePlayServiceImpl` (bet processing), `PlayerServiceImpl` (player management)
+- **Handlers:** `Jugada` (bet validation + game interaction), `GameHandler` (game registry)
+- **Factory:** `GameFactory` (creates game instances by UUID)
+- **Entities:** `Player` (JPA entity), `Bet` (JPA entity with domain logic)
+- **Value Objects:** `BaseGame` + subclasses (VideoBingo, Blackjack, Poker, Roulette, Slot)
+
+## Games Supported
+
+Each game has configurable parameters (prize, probability, min/max bet):
+
+- **Video Bingo** (`VIDEOBINGO-UUID`) - 30% win probability
+- **Blackjack** (`BLACKJACK-UUID`)
+- **Poker** (`POKER-UUID`)
+- **Roulette** (`ROULETTE-UUID`) - 100:1 payout
+- **Slot Machine** (`SLOT-UUID`)
 
 ## Configuration
 
@@ -250,24 +232,30 @@ logging.level.net.jordimp.casino=DEBUG
 Games are configured via `conf.properties`:
 
 ```properties
-videobingo.name=Video Bingo
-videobingo.uuid=VIDEOBINGO-UUID
-videobingo.type=BINGO
-videobingo.prize=50.0
-videobingo.prob=0.3
-videobingo.minbet=1
-videobingo.maxbet=10
+roulette.name=Roulette
+roulette.uuid=ROULETTE-UUID
+roulette.type=ROULETTE
+roulette.prize=100.0
+roulette.prob=0.5
+roulette.minbet=5
+roulette.maxbet=500
 ```
 
 ## Testing
 
 ### Test Coverage
 
-- **Unit Tests:** Domain model behavior (Player.canPlaceBet, Bet.calculateWin)
-- **Integration Tests:** Repositories, Services, Exception Handler
-- **E2E Tests:** Complete API flows (login → bet → logout)
+**Current Metrics:**
+- **140 tests** across 22 test classes
+- **90% branch coverage** (JaCoCo enforced threshold: 85%)
+- **92% complexity coverage**
+- **96% instruction coverage**
 
-**Current Coverage:** 49 tests across 12 test classes
+### Test Types
+
+- **Unit Tests:** Domain models, utilities, handlers
+- **Integration Tests:** Repositories, services, controllers
+- **E2E Tests:** Complete flows (login → bet → logout)
 
 ### Run Tests
 
@@ -276,19 +264,14 @@ videobingo.maxbet=10
 mvn test
 
 # Specific test class
-mvn test -Dtest=PlayerEntityTests
-
-# Specific test method
-mvn test -Dtest=BetTests#testBalanceCalculationIsAtomic
+mvn test -Dtest=BaseGameTests
 
 # With coverage report
 mvn test jacoco:report
+
+# View coverage report
+open target/site/jacoco/index.html
 ```
-
-### Test Profiles
-
-- **Default:** Uses H2 in-memory database (fast)
-- **Test:** Uses H2 in-memory database with `create-drop`
 
 ## Code Quality
 
@@ -304,14 +287,13 @@ mvn spotless:check
 mvn spotless:apply
 ```
 
-
 ### JaCoCo - Code Coverage
 
 Enforces 85% code coverage threshold:
 
 ```bash
-# Run tests with coverage
-mvn test
+# Run tests with coverage check
+mvn clean verify
 
 # Generate HTML report
 mvn jacoco:report
@@ -326,10 +308,10 @@ Continuous integration coverage reporting:
 
 ```bash
 # Upload coverage after tests
-curl -s https://codecov.io/bash
+bash <(curl -s https://codecov.io/bash)
 ```
 
-Coverage badge and reports available at: https://codecov.io/gh/jordimarsal/spring-boot-casino
+Coverage badge and reports: https://codecov.io/gh/jordimarsal/spring-boot-casino
 
 ## Development
 
@@ -349,29 +331,28 @@ mvn clean package -DskipTests
 # Default (postgres profile)
 mvn spring-boot:run
 
-# Test profile
+# Test profile (H2 in-memory)
 mvn spring-boot:run -Dspring.profiles.active=test
 ```
 
 ## Production Readiness
 
 ### Completed
-- PostgreSQL persistence with JPA/Hibernate
-- Transaction management with @Transactional
-- Global exception handling
-- Comprehensive test coverage
-- Code formatting with Spotless
-- Code coverage enforcement with JaCoCo
-- Audit trail for all bets (created_at timestamps)
-- Input validation on all endpoints
-- Thread-safe concurrent access
+- ✅ PostgreSQL persistence with JPA/Hibernate
+- ✅ Transaction management with @Transactional
+- ✅ Global exception handling
+- ✅ Comprehensive test coverage (140 tests, 90%+ branch)
+- ✅ Code formatting with Spotless
+- ✅ Code coverage enforcement with JaCoCo (85% threshold)
+- ✅ Audit trail for all bets (created_at timestamps)
+- ✅ Input validation on all endpoints
+- ✅ Session timeout management
 
 ### Pending
-- Authentication/authorization
-- Rate limiting
-- Performance testing
-- Security audit
-
+- ⏳ Authentication/authorization
+- ⏳ Rate limiting
+- ⏳ Performance testing
+- ⏳ Security audit
 
 ## License
 
@@ -380,5 +361,5 @@ This project is licensed under the MIT License.
 ---
 
 **By Jordi Marsal - Sabadell / Octubre 2020**
-
 **Database Migration & Java 21 update:** February 2026
+**Test coverage improvement:** February 2026

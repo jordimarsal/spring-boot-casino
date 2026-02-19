@@ -22,9 +22,13 @@ A Spring Boot application demonstrating casino game betting logic with PostgreSQ
 ## Quick Start
 
 ### Prerequisites
-- Java 11+
+- Java 21
+- Spring Boot 3.3.2
 - Maven 3.6+
 - PostgreSQL 13+
+- JobRunr 7.5.3
+- JaCoCo 0.8.10
+- Spotless 3.2.1
 
 ### Database Setup
 
@@ -80,7 +84,7 @@ mvn jacoco:report
 
 View report: `target/site/jacoco/index.html`
 
-Coverage threshold: **80%** enforced by build.
+Coverage threshold: **85%** enforced by build.
 
 #### Codecov (Coverage Reporting)
 
@@ -195,16 +199,15 @@ curl http://localhost:9095/api/casino/gets/player-123
 
 ```
 src/main/java/net/jordimp/casino/
-├── CasinoApplication.java          # Spring Boot main class
-├── config/                         # Configuration classes
+├── CasinoApplication.java         # Spring Boot main class
+├── config/                        # Configuration classes
 │   └── JpaConfig.java             # JPA auditing configuration
-├── controllers/                    # REST endpoints
-├── dao/                           # Legacy (deprecated)
+├── controllers/                   # REST endpoints
 ├── entity/                        # JPA entities with domain behavior
-│   ├── Player.java               # Rich domain model
-│   └── UserProvider.java         # Enum
+│   ├── Player.java                # Rich domain model
+│   └── UserProvider.java          # Enum
 ├── exceptions/                    # Domain exceptions
-│   ├── ErrorResponse.java        # Error response DTO
+│   ├── ErrorResponse.java         # Error response DTO
 │   ├── GlobalExceptionHandler.java # @RestControllerAdvice
 │   ├── InsufficientBalanceException.java
 │   ├── PlayerNotFoundException.java
@@ -213,10 +216,10 @@ src/main/java/net/jordimp/casino/
 │   ├── BetRepository.java
 │   └── PlayerRepository.java
 ├── services/                      # Business logic
-│   ├── dto/                      # Data transfer objects
-│   │   └── Bet.java              # JPA entity with domain behavior
-│   ├── handler/                  # Game handlers
-│   └── vo/                       # Value objects (games)
+│   ├── dto/                       # Data transfer objects
+│   │   └── Bet.java               # JPA entity with domain behavior
+│   ├── handler/                   # Game handlers
+│   └── vo/                        # Value objects (games)
 └── utils/                         # Utilities
 ```
 
@@ -291,7 +294,7 @@ mvn test jacoco:report
 
 ### Spotless - Code Formatting
 
-Automatically formats Java code using Palantir Java Format:
+Automatically formats Java code using Google Java Format:
 
 ```bash
 # Check format
@@ -305,7 +308,7 @@ Configuration: Palantir Java Format 2.38.0
 
 ### JaCoCo - Code Coverage
 
-Enforces 80% code coverage threshold:
+Enforces 85% code coverage threshold:
 
 ```bash
 # Run tests with coverage
@@ -324,7 +327,7 @@ Continuous integration coverage reporting:
 
 ```bash
 # Upload coverage after tests
-bash <(curl -s https://codecov.io/bash)
+curl -s https://codecov.io/bash
 ```
 
 Coverage badge and reports available at: https://codecov.io/gh/jordimarsal/spring-boot-casino
@@ -357,7 +360,7 @@ mvn spring-boot:run -Dspring.profiles.active=test
 - PostgreSQL persistence with JPA/Hibernate
 - Transaction management with @Transactional
 - Global exception handling
-- Comprehensive test coverage (49 tests, 80%+ coverage)
+- Comprehensive test coverage
 - Code formatting with Spotless
 - Code coverage enforcement with JaCoCo
 - Audit trail for all bets (created_at timestamps)
@@ -369,14 +372,13 @@ mvn spring-boot:run -Dspring.profiles.active=test
 - Rate limiting
 - Performance testing
 - Security audit
-- CI/CD pipeline with Codecov integration
 
 ## Contributing
 
 1. Format code: `mvn spotless:apply`
 2. Run tests: `mvn test`
 3. Check coverage: `mvn jacoco:report`
-4. Ensure coverage ≥ 80%
+4. Ensure coverage ≥ 85%
 
 ## License
 

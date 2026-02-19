@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>net.jordimp</groupId>
 	<artifactId>casino</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>casino</name>
 	<description>Casino for Zitro</description>
 	
@@ -19,6 +19,14 @@
 	<properties>
 		<java.version>21</java.version>
 		<jarName>spring-boot-casino-j21</jarName>
+        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <!-- JaCoCo default ratios -->
+        <jacoco.instruction.covered.ratio>0.850</jacoco.instruction.covered.ratio>
+        <jacoco.branch.covered.ratio>0.850</jacoco.branch.covered.ratio>
+        <jacoco.complexity.covered.ratio>0.850</jacoco.complexity.covered.ratio>
+        <jacoco.line.covered.ratio>0.850</jacoco.line.covered.ratio>
+        <jacoco.method.covered.ratio>0.850</jacoco.method.covered.ratio>
+        <jacoco.class.covered.ratio>0.850</jacoco.class.covered.ratio>
 	</properties>
 
 	<dependencies>
@@ -121,25 +129,80 @@
 			</plugin>
 
 			<!-- JaCoCo for code coverage reporting -->
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.10</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*Application*</exclude>
+                        <exclude>**/apimodels/**</exclude>
+                        <exclude>**/models/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <haltOnFailure>true</haltOnFailure>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.instruction.covered.ratio}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.branch.covered.ratio}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>COMPLEXITY</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.complexity.covered.ratio}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.line.covered.ratio}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>METHOD</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.method.covered.ratio}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>CLASS</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.class.covered.ratio}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
